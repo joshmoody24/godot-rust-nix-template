@@ -1,11 +1,13 @@
-# Godot + Rust + Nix Template
+# godot-rust-nix-template
 
-Minimal Godot 4 + Rust template for NixOS.
+Minimal Godot 4 + Rust + Nix development template.
 
-## First use
+## Usage
 
 ```bash
-./init-project my-new-game
+git clone <this-repo> my-game
+cd my-game
+./init-project my-game
 nix develop
 ./watch
 godot .
@@ -13,12 +15,7 @@ godot .
 
 ## What it gives you
 
-- `flake.nix` for a pinned Rust + Godot dev shell
+- `flake.nix` — pinned Rust + Godot dev shell
 - a `.gdextension` wired to a Rust `cdylib`
 - a minimal Rust `Node` class named `HelloNode`
-- helper scripts for formatting, linting, and rebuild-on-change
-
-## Notes
-
-- `./init-project my-new-game` renames the project, Rust crate, and extension file.
-- After the first Rust build, open Godot and add a `HelloNode` to a scene to verify the extension loads.
+- helper scripts: `fmt`, `lint`, `watch`

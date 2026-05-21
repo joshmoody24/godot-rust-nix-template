@@ -1,5 +1,5 @@
 {
-  description = "Generic Godot + Rust (godot-rust) development template";
+  description = "Template Game Godot + Rust development";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -31,7 +31,7 @@
         ];
 
         shellHook = ''
-          echo "Godot + Rust template dev shell"
+          echo "Template Game dev shell"
           echo "  Rust: $(rustc --version)"
           echo "  Cargo: $(cargo --version)"
           echo "  Godot: $(godot --version)"

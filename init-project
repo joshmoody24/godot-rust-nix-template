@@ -40,6 +40,7 @@ mapfile -t files < <(find "$template_root" -type f \
   ! -path '*/.git/*' \
   ! -path '*/.godot/*' \
   ! -name 'init-project' \
+  ! -name 'README.md' \
   ! -path '*/rust/target/*')
 
 for file in "${files[@]}"; do
@@ -54,7 +55,16 @@ if [[ -e "$old_extension_file" ]]; then
   mv "$old_extension_file" "$new_extension_file"
 fi
 
+rm "${template_root}/README.md"
+mv "${template_root}/GAME_README.md" "${template_root}/README.md"
+
 echo "Initialized project:"
 echo "  project.godot name: $display_name"
 echo "  Rust crate: $crate_name"
 echo "  GDExtension file: $(basename "$new_extension_file")"
+
+rm -- "$0"
+
+git -C "$template_root" init
+git -C "$template_root" add -A
+git -C "$template_root" commit -m "Initialize $display_name"
