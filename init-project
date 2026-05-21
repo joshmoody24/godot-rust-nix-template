@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: $0 <project-name>" >&2
+  exit 1
+fi
+
+readonly project_name="$1"
+
+if [[ ! "$project_name" =~ ^[a-z0-9-]+$ ]]; then
+  echo "project name must match ^[a-z0-9-]+$" >&2
+  exit 1
+fi
+
+readonly crate_name="${project_name//-/_}"
+IFS=- read -r -a words <<< "$project_name"
+
+display_name_parts=()
+extension_base=""
+
+for word in "${words[@]}"; do
+  capitalized_word="${word^}"
+  display_name_parts+=("$capitalized_word")
+  extension_base+="$capitalized_word"
+done
+
+readonly display_name="${display_name_parts[*]}"
+readonly extension_name="${extension_base}Extension"
+readonly template_root="$(cd "$(dirname "$0")" && pwd)"
+readonly old_extension_file="${template_root}/TemplateGame.gdextension"
+readonly new_extension_file="${template_root}/${extension_name}.gdextension"
+
+if [[ -e "$new_extension_file" && "$new_extension_file" != "$old_extension_file" ]]; then
+  echo "target extension file already exists: $new_extension_file" >&2
+  exit 1
+fi
+
+mapfile -t files < <(find "$template_root" -type f \
+  ! -path '*/.git/*' \
+  ! -path '*/.godot/*' \
+  ! -name 'init-project' \
+  ! -path '*/rust/target/*')
+
+for file in "${files[@]}"; do
+  perl -0pi -e '
+    s/template_game/'"$crate_name"'/g;
+    s/Template Game/'"$display_name"'/g;
+    s/TemplateGameExtension/'"$extension_name"'/g;
+  ' "$file"
+done
+
+if [[ -e "$old_extension_file" ]]; then
+  mv "$old_extension_file" "$new_extension_file"
+fi
+
+echo "Initialized project:"
+echo "  project.godot name: $display_name"
+echo "  Rust crate: $crate_name"
+echo "  GDExtension file: $(basename "$new_extension_file")"
