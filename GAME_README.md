@@ -5,7 +5,7 @@
 ```bash
 nix develop
 ./watch
-godot .
+godot -e
 ```
 
 ## Structure

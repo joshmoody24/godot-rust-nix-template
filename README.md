@@ -10,7 +10,7 @@ cd my-game
 ./init my-game
 nix develop
 ./watch
-godot .
+godot -e
 ```
 
 ## What it gives you
