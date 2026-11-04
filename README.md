@@ -7,7 +7,7 @@ Minimal Godot 4 + Rust + Nix development template.
 ```bash
 git clone <this-repo> my-game
 cd my-game
-./init-project my-game
+./init my-game
 nix develop
 ./watch
 godot .

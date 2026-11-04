@@ -39,7 +39,7 @@ fi
 mapfile -t files < <(find "$template_root" -type f \
   ! -path '*/.git/*' \
   ! -path '*/.godot/*' \
-  ! -name 'init-project' \
+  ! -path "${template_root}/init" \
   ! -name 'README.md' \
   ! -path '*/rust/target/*')
 
