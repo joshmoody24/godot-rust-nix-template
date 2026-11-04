@@ -65,6 +65,7 @@ echo "  GDExtension file: $(basename "$new_extension_file")"
 
 rm -- "$0"
 
+rm -rf "${template_root}/.git"
 git -C "$template_root" init
 git -C "$template_root" add -A
 git -C "$template_root" commit -m "Initialize $display_name"
